@@ -9,7 +9,7 @@ namespace Garbom.Catalogo.Application.AutoMapper
         // To Domain
         public ProdutoMappingProfile()
         {
-            CreateMap<ProdutoDTO, Produto>();
+            CreateMap<ProdutoDTO, Produto>().ReverseMap();
         }
        
     }

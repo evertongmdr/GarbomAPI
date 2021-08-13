@@ -1,8 +1,8 @@
-﻿using Garbom.Catalogo.Domain.Interfaces.Repositories.Reads;
+﻿using Garbom.Catalogo.Domain.Interfaces.Repositories;
 using Garbom.Catalogo.Domain.Models;
-using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Infrastructure.Repository;
 
-namespace Garbom.Catalogo.Infrastructure.Data.Repositories.Reads
+namespace Garbom.Catalogo.Infrastructure.Data.Repositories
 {
     public class ReadOnlyProdutoRepository : ReadOnlyRepository<Produto>, IReadOnlyProdutoRepository
     {

@@ -6,9 +6,16 @@ namespace Garbom.Pedido.Domain.Models
     {
         public ComandaValidator()
         {
-            var mensagemErroPadro = "O campo {PropertyName} é obrigatório";
-            RuleFor(x => x.MesaId).NotEmpty().WithMessage(mensagemErroPadro);
-            //RuleFor(x =>x.DataAbertura).not
+            var mensagemErroPadrao = "O campo {PropertyName} é obrigatório";
+
+            RuleFor(x => x.MesaId).NotEmpty().WithMessage(mensagemErroPadrao);
+
+            RuleFor(x => x.DataAbertura).NotEmpty().WithMessage(mensagemErroPadrao);
+
+            RuleFor(x => x.StatusComanda).IsInEnum().WithMessage("O valor do campo {PropertyName} está inválido");
+
+            RuleFor(x => x.ValorTotal).GreaterThanOrEqualTo(0).WithMessage("O valor do campo {PropertyName} está inválido, o valor deve ser maior ou igual a zero");
+
         }
     }
 }

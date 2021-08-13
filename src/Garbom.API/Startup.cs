@@ -1,3 +1,4 @@
+using Garbom.API.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,8 @@ namespace Garbom.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Garbom.API", Version = "v1" });
             });
+
+            //services.RegisterServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

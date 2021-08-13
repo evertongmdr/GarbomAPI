@@ -9,7 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Garbom.Catalogo.Application\Garbom.Catalogo.Application.csproj" />
+    <ProjectReference Include="..\Garbom.Catalogo.Infrastructure\Garbom.Catalogo.Infrastructure.csproj" />
+    <ProjectReference Include="..\Garbom.Core\Garbom.Core.csproj" />
   </ItemGroup>
 
 </Project>

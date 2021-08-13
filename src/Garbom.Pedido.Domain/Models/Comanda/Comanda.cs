@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Garbom.Pedido.Domain.Models
 {
-    public class Comanda : Entity
+    public class Comanda : Entity, IAggregateRoot
     {
         public Guid MesaId { get; private set; }
         public int Codigo { get; private set; }
@@ -13,13 +13,15 @@ namespace Garbom.Pedido.Domain.Models
         public EStatusComanda StatusComanda { get; private set; }
         public decimal ValorTotal { get; private set; }
 
-        //EF
+        //EF Rel.
         public Mesa Mesa { get; private set; }
         public ICollection<Pedido> Pedidos { get; private set; }
 
         public override bool EhValido()
         {
-            throw new System.
+            ValidationResult = new ComandaValidator().Validate(this);
+
+            return ValidationResult.IsValid;
         }
     }
 }

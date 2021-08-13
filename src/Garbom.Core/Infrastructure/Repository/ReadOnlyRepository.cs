@@ -1,4 +1,5 @@
-﻿using Garbom.Core.Domain.Objects;
+﻿using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Domain.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -7,11 +8,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Garbom.Core.Domain.Interfaces
+namespace Garbom.Core.Infrastructure.Repository
 {
     public class ReadOnlyRepository<TAggregateRoot> : IReadOnlyRepository<TAggregateRoot> where TAggregateRoot : Entity, IAggregateRoot
     {
-        private readonly DbContext _context;
+        protected DbContext _context;
         public ReadOnlyRepository(DbContext context)
         {
             _context = context;
@@ -25,13 +26,13 @@ namespace Garbom.Core.Domain.Interfaces
 
             var query = _context.Set<TAggregateRoot>().AsQueryable();
 
-            if(expressao != null) query = query.Where(expressao);
-           
+            if (expressao != null) query = query.Where(expressao);
+
             if (include != null) query = include(query);
 
             if (semRastreamento)
                 return await query.AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync();
-    
+
             return await query.FirstOrDefaultAsync();
         }
         public async Task<ICollection<TAggregateRoot>> ObterTodos(Expression<Func<TAggregateRoot, bool>> expressao = null, Func<IQueryable<TAggregateRoot>, IIncludableQueryable<TAggregateRoot, object>> include = null, bool semRastreamento = false)

@@ -9,7 +9,7 @@ namespace Garbom.Catalogo.Domain.Models
     {
         public string Nome { get; private set; }
 
-        //EF
+        //EF Rel.
         public ICollection<Produto> Produtos { get; private set; }
 
         public Categoria(string nome)

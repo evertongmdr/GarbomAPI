@@ -11,7 +11,7 @@ namespace Garbom.Catalogo.Domain.Models
         public DateTime DataCriacao { get; private set; }
         public bool Ativo { get; private set; }
 
-        // EF
+        //EF Rel.
         public ICollection<Produto> Produtos { get; private set; }
 
         public Combo(string nome, DateTime dataCriacao,bool ativo, Guid usuarioCriacaoId)

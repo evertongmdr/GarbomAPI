@@ -1,12 +1,13 @@
-﻿using Garbom.Core.Domain.Objects;
+﻿using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Domain.Objects;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace Garbom.Core.Domain.Interfaces
+namespace Garbom.Core.Infrastructure.Repository
 {
     public class WriteOnlyRepository<TAggregateRoot> : IWriteOnlyRepository<TAggregateRoot> where TAggregateRoot : Entity, IAggregateRoot
     {
-        private readonly DbContext _context;
+        protected DbContext _context;
         public IUnitOfWork UnitOfWork => (IUnitOfWork)_context;
         public WriteOnlyRepository(DbContext context)
         {

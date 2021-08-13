@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using Garbom.Catalogo.Application.DTOS;
 using Garbom.Catalogo.Application.Interfaces;
-using Garbom.Catalogo.Domain.Interfaces.Repositories.Reads;
-using Garbom.Catalogo.Domain.Interfaces.Repositories.Writes;
+using Garbom.Catalogo.Domain.Interfaces.Repositories;
 using Garbom.Catalogo.Domain.Models;
+using Garbom.Core.Domain.Objects;
 using System;
 using System.Threading.Tasks;
 
-namespace Garbom.Catalogo.Application.Services
+namespace Garbom.Catalogo.Application.AppServices
 {
-    public class ProdutoAppService : IProdutoAppService
+    public class ProdutoAppService : Service, IProdutoAppService
     {
         private readonly IReadOnlyProdutoRepository _readOnlyProdutoRepository;
         private readonly IWriteOnlyProdutoRepository _writeOnlyProdutoRepository;
@@ -26,18 +27,17 @@ namespace Garbom.Catalogo.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Produto> ObterPorId(Guid id)
+        public async Task<ProdutoDTO> ObterPorId(Guid id)
         {
-            return await _readOnlyProdutoRepository.ObterPorId(id);
+            return _mapper.Map<ProdutoDTO>(await _readOnlyProdutoRepository.ObterPorId(id));
         }
 
-        public async Task Adicionar(ProdutoDTO produtoDTO)
+        public async Task<ValidationResult> Adicionar(ProdutoDTO produtoDTO)
         {
-
             var produto = _mapper.Map<Produto>(produtoDTO);
             _writeOnlyProdutoRepository.Adicionar(produto);
 
-            await _writeOnlyProdutoRepository.UnitOfWork.Commit();
+           return await PersistirDados(_writeOnlyProdutoRepository.UnitOfWork);
         }
 
         public void Dispose()

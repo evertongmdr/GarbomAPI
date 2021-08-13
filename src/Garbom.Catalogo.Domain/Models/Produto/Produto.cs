@@ -16,7 +16,7 @@ namespace Garbom.Catalogo.Domain.Models
         public int QuantidadeEstoque { get; private set; }
         public bool Ativo { get; private set; }
 
-        //EF
+        //EF Rel.
         public Categoria Categoria { get; private set; }
         public UnidadeMedida UnidadeMedida { get; private set; }
         public Marca Marca { get; private set; }
@@ -32,6 +32,23 @@ namespace Garbom.Catalogo.Domain.Models
             CategoriaId = categoriaId;
             UnidadeMedidaId = unidadeMedidaId;
             MarcaId = marcaId;
+        }
+
+        public bool PossuiEstoque(int quantidade)
+        {
+            return QuantidadeEstoque >= quantidade;
+        }
+
+        public void DebitarEstoque(int quantidade)
+        {
+            if (quantidade < 0) quantidade *= -1;
+            if (!PossuiEstoque(quantidade)) throw new DomainException("Estoque insuficiente");
+            QuantidadeEstoque -= quantidade;
+        }
+
+        public void ReporEstoque(int quantidade)
+        {
+            QuantidadeEstoque += quantidade;
         }
 
         public override bool EhValido()
