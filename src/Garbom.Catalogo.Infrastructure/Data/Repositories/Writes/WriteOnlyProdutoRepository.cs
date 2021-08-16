@@ -1,6 +1,6 @@
 ﻿using Garbom.Catalogo.Domain.Interfaces.Repositories;
 using Garbom.Catalogo.Domain.Models;
-using Garbom.Core.Infrastructure.Repository;
+using Garbom.Core.Infrastructure.Data.Repository;
 
 namespace Garbom.Catalogo.Infrastructure.Data.Repositories
 {

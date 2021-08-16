@@ -21,7 +21,6 @@ namespace Garbom.Catalogo.Domain.Models
         public UnidadeMedida UnidadeMedida { get; private set; }
         public Marca Marca { get; private set; }
         public ICollection<Combo> Combos { get; private set; }
-
         public Produto(string nome, string descricao,decimal valor, bool ativo, Guid categoriaId,Guid unidadeMedidaId, Guid? marcaId = null)
         {
             Nome = nome;

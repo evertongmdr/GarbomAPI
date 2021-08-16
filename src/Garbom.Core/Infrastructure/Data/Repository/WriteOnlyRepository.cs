@@ -3,7 +3,7 @@ using Garbom.Core.Domain.Objects;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace Garbom.Core.Infrastructure.Repository
+namespace Garbom.Core.Infrastructure.Data.Repository
 {
     public class WriteOnlyRepository<TAggregateRoot> : IWriteOnlyRepository<TAggregateRoot> where TAggregateRoot : Entity, IAggregateRoot
     {
@@ -13,7 +13,7 @@ namespace Garbom.Core.Infrastructure.Repository
         {
             _context = context;
         }
-       
+
         public void Adicionar(TAggregateRoot aggregateRoot)
         {
             _context.Set<TAggregateRoot>().Add(aggregateRoot);

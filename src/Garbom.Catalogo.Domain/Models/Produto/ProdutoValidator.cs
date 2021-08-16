@@ -11,9 +11,6 @@ namespace Garbom.Catalogo.Domain.Models
             RuleFor(x => x.CategoriaId).NotEmpty()
                 .WithMessage(mensagemPadraoErro);
 
-            RuleFor(x => x.MarcaId).NotEmpty()
-                .WithMessage(mensagemPadraoErro);
-
             RuleFor(x => x.Nome).NotEmpty()
                 .WithMessage(mensagemPadraoErro);
 

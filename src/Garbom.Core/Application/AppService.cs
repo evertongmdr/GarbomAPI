@@ -1,16 +1,15 @@
 ﻿using FluentValidation.Results;
-using Garbom.Core.Application;
 using Garbom.Core.Domain.Interfaces;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Garbom.Core.Domain.Objects
+namespace Garbom.Core.Application
 {
-    public abstract class Service
+    public class AppService
     {
         public ValidationResult ValidationResult { get; set; }
 
-        public Service()
+        public AppService()
         {
             ValidationResult = new ValidationResult();
         }
@@ -28,14 +27,6 @@ namespace Garbom.Core.Domain.Objects
 
             ValidationResult.Errors.Add(validationFailure);
         }
-
-        protected async Task<ValidationResult> PersistirDados(IUnitOfWork uow)
-        {
-            if (!await uow.Commit()) AdicionarErro("Houve um erro ao persistir os dados", HttpStatusCode.BadRequest);
-
-            return ValidationResult;
-        }
-
         protected async Task<AppValidationResult<T>> PersistirDados<T>(IUnitOfWork uow, T objeto) where T : class
         {
             var validaionFailure = new ValidationFailure(string.Empty,

@@ -8,7 +8,7 @@ namespace Garbom.Pedido.Domain.Models
     {
         public Guid UsuarioId { get; private set; }
         public string NomeUsuario { get; private set; }
-        public int Codigo { get; private set; }
+        public long Codigo { get; private set; }
         public DateTime DataCadastro { get; private set; }
         public EStatusPedido StatusPedido { get; private set; }
         public decimal ValorTotal { get; private set; }

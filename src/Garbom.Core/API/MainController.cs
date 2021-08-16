@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
-namespace Garbom.Core.Application.Objects
+namespace Garbom.Core.API
 {
     public abstract class MainController : ControllerBase
     {
-        
+
     }
 }

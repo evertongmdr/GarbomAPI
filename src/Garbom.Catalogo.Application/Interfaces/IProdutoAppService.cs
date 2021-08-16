@@ -1,16 +1,20 @@
 ﻿using FluentValidation.Results;
 using Garbom.Catalogo.Application.DTOS;
-using Garbom.Catalogo.Domain.Models;
-using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Application;
 using System;
 
 using System.Threading.Tasks;
 
 namespace Garbom.Catalogo.Application.Interfaces
 {
-    public interface IProdutoAppService : IService
+    public interface IProdutoAppService : IDisposable
     {
-        Task<ProdutoDTO> ObterPorId(Guid id);
-        Task<ValidationResult> Adicionar(ProdutoDTO produtoDTO);
+        //Produto
+        Task<ProdutoDTO> ObterProdutoPorId(Guid id);
+        Task<AppValidationResult<ProdutoDTO>> AdicionarProduto(ProdutoDTO produtoDTO);
+
+        // Categoria
+        Task<CategoriaDTO> ObterCategoriaPorId(Guid id);
+        Task<AppValidationResult<CategoriaDTO>> AdicionarCategoria(CategoriaDTO categoriaDTO);
     }
 }

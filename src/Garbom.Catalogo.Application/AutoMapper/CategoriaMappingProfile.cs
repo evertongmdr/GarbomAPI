@@ -4,13 +4,11 @@ using Garbom.Catalogo.Domain.Models;
 
 namespace Garbom.Catalogo.Application.AutoMapper
 {
-    public class ProdutoMappingProfile : Profile
+    public class CategoriaMappingProfile : Profile
     {
-      
-        public ProdutoMappingProfile()
+        public CategoriaMappingProfile()
         {
-            CreateMap<ProdutoDTO, Produto>().ReverseMap();
+            CreateMap<CategoriaDTO, Categoria>().ReverseMap();
         }
-       
     }
 }

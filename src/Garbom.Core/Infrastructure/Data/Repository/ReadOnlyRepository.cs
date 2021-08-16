@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Garbom.Core.Infrastructure.Repository
+namespace Garbom.Core.Infrastructure.Data.Repository
 {
     public class ReadOnlyRepository<TAggregateRoot> : IReadOnlyRepository<TAggregateRoot> where TAggregateRoot : Entity, IAggregateRoot
     {

@@ -1,4 +1,4 @@
-﻿using Garbom.Core.Application.Objects;
+﻿using Garbom.Core.Application;
 using System;
 
 namespace Garbom.Catalogo.Application.DTOS

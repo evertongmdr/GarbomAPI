@@ -7,7 +7,7 @@ namespace Garbom.Pedido.Domain.Models
     public class Comanda : Entity, IAggregateRoot
     {
         public Guid MesaId { get; private set; }
-        public int Codigo { get; private set; }
+        public long Codigo { get; private set; }
         public DateTime DataAbertura { get; private set; }
         public DateTime DataFechamento { get; private set; }
         public EStatusComanda StatusComanda { get; private set; }
