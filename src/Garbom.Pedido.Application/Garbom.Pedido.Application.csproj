@@ -5,10 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AutoMapper\" />
-    <Folder Include="DTOS\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="AppServices\" />
+    <Folder Include="Events\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Garbom.Core\Garbom.Core.csproj" />
+    <ProjectReference Include="..\Garbom.Pedido.Domain\Garbom.Pedido.Domain.csproj" />
   </ItemGroup>
 
 </Project>

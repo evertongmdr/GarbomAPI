@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Garbom.Core.Domain.Objects;
 
 namespace Garbom.Catalogo.Domain.Models
@@ -9,8 +10,8 @@ namespace Garbom.Catalogo.Domain.Models
 
         //EF
         public ICollection<Produto> Produtos { get; set; }
-
-        public UnidadeMedida(string nome)
+        protected UnidadeMedida() { }
+        public UnidadeMedida(Guid empresaId, string nome, Guid? id = null) : base(empresaId, id)
         {
             Nome = nome;
         }

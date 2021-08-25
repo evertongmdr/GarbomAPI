@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.Pedido.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.Pedido.Application", "src\Garbom.Pedido.Application\Garbom.Pedido.Application.csproj", "{54D6DE05-AD4F-4E23-BECB-B15F40C70EE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garbom.API", "src\Garbom.API\Garbom.API.csproj", "{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.API", "src\Garbom.API\Garbom.API.csproj", "{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

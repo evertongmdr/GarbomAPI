@@ -11,13 +11,13 @@ namespace Garbom.Catalogo.Infrastructure.Data.Mappings
         {
             EntityMapping<Produto>.Configure(builder);
 
+            builder.HasIndex(p => new { p.EmpresaId, p.Codigo }).IsUnique();
+
             builder.Property(p => p.Nome).IsRequired().HasMaxLength(128);
 
             builder.Property(p => p.Descricao).HasMaxLength(256);
 
             builder.Property(p => p.Valor).HasPrecision(8, 2);
-
-            builder.HasIndex(p => p.Codigo).IsUnique();
 
             builder.ToTable("Produtos");
         }

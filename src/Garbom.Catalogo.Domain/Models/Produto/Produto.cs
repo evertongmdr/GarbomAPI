@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Garbom.Core.Domain.Objects;
+using System;
 using System.Collections.Generic;
-using Garbom.Core.Domain.Objects;
 
 namespace Garbom.Catalogo.Domain.Models
 {
@@ -13,6 +13,14 @@ namespace Garbom.Catalogo.Domain.Models
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public decimal Valor { get; private set; }
+        /// <summary>
+        /// Define se o produto vai ter controle de estoque
+        /// </summary>
+        public bool ControlarEstoque { get; private set; }
+        /// <summary>
+        /// Define a quantidade mínima de estoque do produto.
+        /// </summary>
+        public int QuantidadeEstoqueMinima { get; private set; }
         public int QuantidadeEstoque { get; private set; }
         public bool Ativo { get; private set; }
 
@@ -21,16 +29,29 @@ namespace Garbom.Catalogo.Domain.Models
         public UnidadeMedida UnidadeMedida { get; private set; }
         public Marca Marca { get; private set; }
         public ICollection<Combo> Combos { get; private set; }
-        public Produto(string nome, string descricao,decimal valor, bool ativo, Guid categoriaId,Guid unidadeMedidaId, Guid? marcaId = null)
+
+        protected Produto() { }
+        public Produto(Guid empresaId, Guid categoriaId, Guid unidadeMedidaId, int codigo, string nome, string descricao, decimal valor, bool controlarEstoque, bool ativo, Guid? marcaId = null, Guid? id = null) : base(empresaId, id)
         {
+            Codigo = codigo;
             Nome = nome;
             Descricao = descricao;
             Valor = valor;
+            ControlarEstoque = controlarEstoque;
             Ativo = ativo;
 
             CategoriaId = categoriaId;
             UnidadeMedidaId = unidadeMedidaId;
             MarcaId = marcaId;
+        }
+        public void AtribuirQuantidadeEstoqueMinima(int quantidadeEstoqueMinima)
+        {
+            QuantidadeEstoqueMinima = quantidadeEstoqueMinima;
+        }
+
+        public void AtribuirQuantidadeEstoque(int quantidadeEstoque)
+        {
+            QuantidadeEstoque = quantidadeEstoque;
         }
 
         public bool PossuiEstoque(int quantidade)
@@ -49,6 +70,13 @@ namespace Garbom.Catalogo.Domain.Models
         {
             QuantidadeEstoque += quantidade;
         }
+
+        public bool EstoqueEstaEmQuantidadeMinima()
+        {
+            return QuantidadeEstoque <= QuantidadeEstoqueMinima;
+        }
+
+        public void Destivar() => Ativo = false;
 
         public override bool EhValido()
         {

@@ -1,7 +1,8 @@
 ﻿using Garbom.Catalogo.Domain.Models;
-using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Domain.Interfaces.Objects;
 using Garbom.Core.Infrastructure.Data.DatabaseFunctionMapping;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,15 @@ namespace Garbom.Catalogo.Infrastructure.Data
             }
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
+
+            var categoria = new Categoria(Guid.Parse("54c11c4a-62e1-488f-a928-fc5b88679fdd"), "Doces", Guid.Parse("0cdd840e-8b1f-4bdb-bd77-b0881ceb04df"));
+            modelBuilder.Entity<Categoria>().HasData(new[] { categoria });
+
+            var unidadeMedida = new UnidadeMedida(Guid.Parse("54c11c4a-62e1-488f-a928-fc5b88679fdd"), "Unidade", Guid.Parse("995182c7-c02f-4d10-b409-0f5bb7b231b9"));
+            modelBuilder.Entity<UnidadeMedida>().HasData(new[] { unidadeMedida });
+
+            var produto = new Produto(Guid.Parse("54c11c4a-62e1-488f-a928-fc5b88679fdd"), Guid.Parse("0cdd840e-8b1f-4bdb-bd77-b0881ceb04df"), Guid.Parse("995182c7-c02f-4d10-b409-0f5bb7b231b9"), 10, "Bombom", "Bombom da Nestle", 5, false, true, null, Guid.Parse("fd48798c-c675-4ec5-8ca6-ecb3ff358282"));
+            modelBuilder.Entity<Produto>().HasData(new[] { produto });
         }
         public async Task<bool> Commit()
         {

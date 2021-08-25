@@ -1,4 +1,4 @@
-﻿using Garbom.Core.Domain.Interfaces;
+﻿using Garbom.Core.Domain.Interfaces.Objects;
 using Garbom.Core.Domain.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -17,9 +17,9 @@ namespace Garbom.Core.Infrastructure.Data.Repository
         {
             _context = context;
         }
-        public async Task<TAggregateRoot> ObterPorId(Guid id)
+        public async Task<TEntity> ObterPorId<TEntity>(Guid id) where TEntity : Entity
         {
-            return await _context.Set<TAggregateRoot>().FindAsync(id);
+            return await _context.Set<TEntity>().FindAsync(id);
         }
         public async Task<TAggregateRoot> ObterPrimeiro(Expression<Func<TAggregateRoot, bool>> expressao = null, Func<IQueryable<TAggregateRoot>, IIncludableQueryable<TAggregateRoot, object>> include = null, bool semRastreamento = false)
         {
@@ -35,9 +35,9 @@ namespace Garbom.Core.Infrastructure.Data.Repository
 
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<ICollection<TAggregateRoot>> ObterTodos(Expression<Func<TAggregateRoot, bool>> expressao = null, Func<IQueryable<TAggregateRoot>, IIncludableQueryable<TAggregateRoot, object>> include = null, bool semRastreamento = false)
+        public async Task<ICollection<TEntity>> ObterTodos<TEntity>(Expression<Func<TEntity, bool>> expressao = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool semRastreamento = false) where TEntity : Entity
         {
-            var query = _context.Set<TAggregateRoot>().AsQueryable();
+            var query = _context.Set<TEntity>().AsQueryable();
 
             if (expressao != null) query = query.Where(expressao);
 
@@ -51,7 +51,7 @@ namespace Garbom.Core.Infrastructure.Data.Repository
 
         public async Task<bool> ExisteAlgum(Expression<Func<TAggregateRoot, bool>> expressao = null)
         {
-            return await _context.Set<TAggregateRoot>().AnyAsync();
+            return await _context.Set<TAggregateRoot>().Where(expressao).AnyAsync();
         }
 
         public async Task<int> Count(Expression<Func<TAggregateRoot, bool>> expressao = null)

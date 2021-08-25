@@ -1,6 +1,9 @@
-﻿using FluentValidation.Results;
+﻿using Garbom.Catalogo.Domain.Events;
 using Garbom.Catalogo.Domain.Interfaces.Repositories;
 using Garbom.Catalogo.Domain.Interfaces.Services;
+using Garbom.Catalogo.Domain.Models;
+using Garbom.Core.Communication.Mediator;
+using Garbom.Core.Domain.Messages.CommonMessages.Notifications;
 using Garbom.Core.Domain.Objects;
 using System;
 using System.Net;
@@ -10,66 +13,73 @@ namespace Garbom.Catalogo.Domain.Services
 {
     public class EstoqueService : Service, IEstoqueService
     {
+
+        private readonly IMediatorHandler _mediatorHandler;
         private readonly IReadOnlyProdutoRepository _readOnlyProdutoRepository;
         private readonly IWriteOnlyProdutoRepository _writeOnlyProdutoRepository;
 
-
-        public EstoqueService(IReadOnlyProdutoRepository readOnlyProdutoRepository,
-            IWriteOnlyProdutoRepository writeOnlyProdutoRepository)
+        public EstoqueService(
+            NotificationContext notificationContext,
+            IMediatorHandler mediatorHandler,
+        IReadOnlyProdutoRepository readOnlyProdutoRepository,
+            IWriteOnlyProdutoRepository writeOnlyProdutoRepository) : base(notificationContext)
         {
+
+            _mediatorHandler = mediatorHandler;
             _readOnlyProdutoRepository = readOnlyProdutoRepository;
             _writeOnlyProdutoRepository = writeOnlyProdutoRepository;
         }
 
-        public async Task<ValidationResult> DebitarEstoque(Guid produtoId, int quantidade)
+        public async Task<bool> DebitarEstoque(Guid produtoId, int quantidade)
         {
-
             if (!await DebitarItemEstoque(produtoId, quantidade))
-                return ValidationResult;
+                return false;
 
             return await PersistirDados(_writeOnlyProdutoRepository.UnitOfWork);
         }
 
         private async Task<bool> DebitarItemEstoque(Guid produtoId, int quantidade)
         {
-            var produto = await _readOnlyProdutoRepository.ObterPorId(produtoId);
+            var produto = await _readOnlyProdutoRepository.ObterPorId<Produto>(produtoId);
 
             if (produto == null)
             {
-                AdicionarErro("Estoque", "Produto não encontrado", HttpStatusCode.NotFound);
+                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado"));
                 return false;
             }
 
             if (!produto.PossuiEstoque(quantidade))
             {
-                AdicionarErro("Estoque", $"Produto - {produto.Nome} sem estoque", HttpStatusCode.BadRequest);
+                _notificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {produto.Nome} sem estoque"));
                 return false;
             }
 
             produto.DebitarEstoque(quantidade);
 
-            // TODO: 10 pode ser parametrizavel em arquivo de configuração
-            if (produto.QuantidadeEstoque < 10) { }
+            if (produto.EstoqueEstaEmQuantidadeMinima())
+            {
+                await _mediatorHandler.PublicarDomainEvent(new ProdutoAbaixoEstoqueEvent(produto.Id, produto.QuantidadeEstoque));
+            }
 
             _writeOnlyProdutoRepository.Atualizar(produto);
 
             return true;
         }
-        public async Task<ValidationResult> ReporEstoque(Guid produtoId, int quantidade)
+        public async Task<bool> ReporEstoque(Guid produtoId, int quantidade)
         {
             if (!await ReporItemEstoque(produtoId, quantidade))
-                return ValidationResult;
+                return false;
 
             return await PersistirDados(_writeOnlyProdutoRepository.UnitOfWork);
         }
 
         private async Task<bool> ReporItemEstoque(Guid produtoId, int quantidade)
         {
-            var produto = await _readOnlyProdutoRepository.ObterPorId(produtoId);
+            var produto = await _readOnlyProdutoRepository.ObterPorId<Produto>(produtoId);
 
             if (produto == null)
             {
-                AdicionarErro("Estoque", "Produto não encontrado", HttpStatusCode.NotFound);
+                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado", HttpStatusCode.NotFound));
                 return false;
             }
 
@@ -85,5 +95,6 @@ namespace Garbom.Catalogo.Domain.Services
             _readOnlyProdutoRepository?.Dispose();
             _writeOnlyProdutoRepository?.Dispose();
         }
+
     }
 }

@@ -7,15 +7,15 @@ namespace Garbom.Pedido.Domain.Models
     public class Produto : Entity
     {
         public string Nome { get; private set; }
-        public decimal ValorUnitario { get; private set; }
 
         //EF Rel.
+        protected Produto() { }
         public ICollection<PedidoItem> PedidoItens { get; private set; }
 
-        public Produto(Guid empersaId, Guid id, string nome, decimal valorUnitario) : base(empersaId,id)
+        public Produto(Guid empersaId, Guid id, string nome) : base(empersaId, id)
         {
             Nome = nome;
-            ValorUnitario = valorUnitario;
+
         }
 
         public override bool EhValido()

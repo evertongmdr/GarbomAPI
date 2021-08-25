@@ -1,5 +1,5 @@
 ﻿using Garbom.Catalogo.Domain.Models;
-using Garbom.Core.Domain.Interfaces;
+using Garbom.Core.Domain.Interfaces.Objects;
 
 namespace Garbom.Catalogo.Domain.Interfaces.Repositories
 {

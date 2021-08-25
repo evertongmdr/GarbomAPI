@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +18,13 @@
     <ProjectReference Include="..\Garbom.Catalogo.Application\Garbom.Catalogo.Application.csproj" />
     <ProjectReference Include="..\Garbom.Catalogo.Infrastructure\Garbom.Catalogo.Infrastructure.csproj" />
     <ProjectReference Include="..\Garbom.Core\Garbom.Core.csproj" />
+    <ProjectReference Include="..\Garbom.Pedido.Application\Garbom.Pedido.Application.csproj" />
+    <ProjectReference Include="..\Garbom.Pedido.Infrastructure\Garbom.Pedido.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Comanda\ObjetosRequest\" />
+    <Folder Include="Controllers\Produto\ObjetosRequest\" />
   </ItemGroup>
 
 </Project>

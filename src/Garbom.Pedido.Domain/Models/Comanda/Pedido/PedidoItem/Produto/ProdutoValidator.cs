@@ -14,9 +14,6 @@ namespace Garbom.Pedido.Domain.Models
 
             RuleFor(x => x.Nome).NotEmpty().WithMessage(mensagemErroPadrao);
 
-            RuleFor(x => x.ValorUnitario).GreaterThanOrEqualTo(0)
-                 .WithMessage("O valor do campo {PropertyName} deve ser maior que 0");
-
         }
     }
 }

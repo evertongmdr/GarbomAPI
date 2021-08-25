@@ -8,19 +8,20 @@ namespace Garbom.Pedido.Domain.Models
         public Guid PedidoId { get; private set; }
         public Guid ProdutoId { get; private set; }
         public int Quantidade { get; private set; }
+        public decimal ValorUnitario { get; private set; }
 
-        public PedidoItem(Guid empresaId, Guid pedidoId, Guid produtoId, int quantidade, Guid? id = null): base(empresaId,id)
+        public PedidoItem(Guid empresaId, Guid pedidoId, Guid produtoId, int quantidade, decimal valorUnitario, Guid? id = null) : base(empresaId, id)
         {
             PedidoId = pedidoId;
             ProdutoId = produtoId;
             Quantidade = quantidade;
-           
+            ValorUnitario = valorUnitario;
         }
 
         //EF Rel.
+        protected PedidoItem() { }
         public Pedido Pedido { get; private set; }
         public Produto Produto { get; private set; }
-
 
         public override bool EhValido()
         {

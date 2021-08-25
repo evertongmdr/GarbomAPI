@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Garbom.Catalogo.Domain\Garbom.Catalogo.Domain.csproj" />
-    <ProjectReference Include="..\Garbom.Pedido.Domain\Garbom.Pedido.Domain.csproj" />
   </ItemGroup>
 
 </Project>

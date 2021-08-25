@@ -1,4 +1,4 @@
-﻿using Garbom.Core.Domain.Interfaces;
+﻿using Garbom.Core.Domain.Interfaces.Objects;
 using Garbom.Core.Domain.Objects;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Garbom.Core.Infrastructure.Data.Repository
             _context.Set<TAggregateRoot>().Add(aggregateRoot);
         }
 
-        public void AdicionarConjunto(ICollection<TAggregateRoot> aggregatesRoot)
+        public void AdicionarConjunto(IList<TAggregateRoot> aggregatesRoot)
         {
             _context.Set<TAggregateRoot>().AddRange(aggregatesRoot);
         }
@@ -27,6 +27,11 @@ namespace Garbom.Core.Infrastructure.Data.Repository
         public void Atualizar(TAggregateRoot aggregateRoot)
         {
             _context.Set<TAggregateRoot>().Update(aggregateRoot);
+        }
+
+        public void Atualizar(TAggregateRoot aggregateRootVelho, TAggregateRoot aggregateRootNovo)
+        {
+            _context.Entry(aggregateRootVelho).CurrentValues.SetValues(aggregateRootNovo);
         }
         public void Remover(TAggregateRoot aggregateRoot)
         {
@@ -37,5 +42,7 @@ namespace Garbom.Core.Infrastructure.Data.Repository
         {
             _context?.Dispose();
         }
+
+       
     }
 }
