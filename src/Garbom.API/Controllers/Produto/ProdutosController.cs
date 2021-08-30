@@ -52,7 +52,7 @@ namespace Garbom.API.Controllers
             return ErroResponse();
         }
 
-        [HttpGet("[controller]",Name ="ObterProdutos")]
+        [HttpGet("[controller]", Name = "ObterProdutos")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> ObterProdutos([FromQuery] ProdutoRecursoParametro produtoRecursoParametro)
@@ -61,7 +61,7 @@ namespace Garbom.API.Controllers
 
             if (OperacaoValida())
             {
-                CriarUri("ObterProdutos", produtoRecursoParametro,produtosPaginado);
+                CriarUri("ObterProdutos", produtoRecursoParametro, produtosPaginado);
                 return OkResponse(produtosPaginado);
             }
 

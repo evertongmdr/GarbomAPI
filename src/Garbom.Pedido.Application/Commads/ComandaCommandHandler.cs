@@ -1,7 +1,11 @@
 ﻿
 using AutoMapper;
+using Garbom.Core.Communication.Mediator;
 using Garbom.Core.Domain.Messages;
+using Garbom.Core.Domain.Messages.CommonMessages.IntegrationEvents;
 using Garbom.Core.Domain.Messages.CommonMessages.Notifications;
+using Garbom.Core.Domain.Objects.CDTO;
+using Garbom.Core.Extensions;
 using Garbom.Pedido.Application.DTOS;
 using Garbom.Pedido.Domain.Interfaces.Repositories;
 using Garbom.Pedido.Domain.Models;
@@ -19,15 +23,18 @@ namespace Garbom.Pedido.Application.Commads
         IRequestHandler<AdicionarPedidoCommand, bool>
     {
 
+        private readonly IMediatorHandler _mediatorHandler;
         private readonly IMapper _mapper;
         private readonly IReadOnlyComandaRepository _readOnlyComandaRepository;
         private readonly IWriteOnlyComandaRepository _writeOnlyComandaRepository;
         public ComandaCommandHandler(
             NotificationContext notificationContext,
+            IMediatorHandler mediatorHandler,
             IMapper mapper,
             IReadOnlyComandaRepository readOnlyComandaRepository,
             IWriteOnlyComandaRepository writeOnlyComandaRepository) : base(notificationContext)
         {
+            _mediatorHandler = mediatorHandler;
             _mapper = mapper;
             _readOnlyComandaRepository = readOnlyComandaRepository;
             _writeOnlyComandaRepository = writeOnlyComandaRepository;
@@ -76,17 +83,23 @@ namespace Garbom.Pedido.Application.Commads
                 return default;
             }
 
+            /*
+                //**Validação feita na controller**
+              
             var pedidoItenIds = mensagem.PedidoItens.Select(pi => pi.ProdutoId);
             var existeProdutoNaoEcontrado = await _readOnlyComandaRepository.ObterTodos<Produto>(p => !pedidoItenIds.Contains(p.Id));
 
             if (existeProdutoNaoEcontrado != null)
             {
-                existeProdutoNaoEcontrado.ToList().ForEach(produto =>
+                existeProdutoNaoEcontrado.ForEach(produto =>
                 {
                     _notificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound));
                 });
+
+                existeProdutoNaoEcontrado.ToList().ForEach(produto => _notificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound)));
                 return default;
-            }
+            
+            */
 
             var novoPedido = new Domain.Models.Pedido(mensagem.EmpresaId, mensagem.ComandaId,
                 mensagem.FuncionarioId, mensagem.NomeFuncionario, DateTime.Now, EStatusPedido.Iniciado, mensagem.ValorTotal,
@@ -96,6 +109,10 @@ namespace Garbom.Pedido.Application.Commads
 
             if (!await _writeOnlyComandaRepository.UnitOfWork.Commit()) return default;
 
+            var pedidoCDTO = new PedidoCDTO(novoPedido.Id, novoPedido.PedidoItens.Select(pi => _mapper.Map<PedidoItemCDTO>(pi)).ToList());
+            var evento = new PedidoConfirmadoIntegrationEvent(mensagem.ComandaId, pedidoCDTO);
+
+            await _mediatorHandler.PublicarEvento(evento);
             return true;
 
         }

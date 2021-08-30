@@ -2,7 +2,7 @@
 using Garbom.Catalogo.Domain.Models;
 using Garbom.Core.Helps.Objects;
 using System;
-
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Garbom.Catalogo.Application.Interfaces
@@ -12,6 +12,7 @@ namespace Garbom.Catalogo.Application.Interfaces
 
         #region Produto
         Task<ProdutoDTO> ObterProdutoPorId(Guid id);
+        Task<ICollection<Produto>> ObterProdutosPorIds(ICollection<Guid> ids);
         Task<ListaPaginadaDinamica> ObterProdutos(ProdutoRecursoParametro produtoRecursoParametro);
         Task<ProdutoDTO> AdicionarProduto(ProdutoDTO produtoDTO);
         Task<ProdutoDTO> AtualizarProduto(ProdutoDTO produtoDTO);

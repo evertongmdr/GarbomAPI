@@ -5,7 +5,11 @@ using Garbom.Catalogo.Domain.Models;
 using Garbom.Core.Communication.Mediator;
 using Garbom.Core.Domain.Messages.CommonMessages.Notifications;
 using Garbom.Core.Domain.Objects;
+using Garbom.Core.Domain.Objects.CDTO;
+using Garbom.Core.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -65,6 +69,38 @@ namespace Garbom.Catalogo.Domain.Services
 
             return true;
         }
+
+        public async Task<bool> DebitarEstoqueListaProduto(ICollection<PedidoItemCDTO> produtoItens)
+        {
+            var produtos = await _readOnlyProdutoRepository.ObterTodos<Produto>(p => produtoItens.Select(x => x.Id).ToList().Contains(p.Id));
+
+            if (produtos == null)
+            {
+                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
+                return false;
+            }
+
+            if (produtos.Count != produtoItens.Count)
+            {
+                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
+                return false;
+            }
+            Produto p = null;
+
+            foreach (var pi in produtoItens)
+            {
+                p = produtos.First(x => x.Id == pi.Id);
+                if (!p.PossuiEstoque(pi.Quantidade))
+                {
+                    _notificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {p.Nome } sem estoque"));
+                    return false;
+                }
+                p.DebitarEstoque(pi.Quantidade);
+                // _writeOnlyProdutoRepository.Atualizar(p);
+            }
+
+            return await PersistirDados(_writeOnlyProdutoRepository.UnitOfWork);
+        }
         public async Task<bool> ReporEstoque(Guid produtoId, int quantidade)
         {
             if (!await ReporItemEstoque(produtoId, quantidade))
@@ -95,6 +131,7 @@ namespace Garbom.Catalogo.Domain.Services
             _readOnlyProdutoRepository?.Dispose();
             _writeOnlyProdutoRepository?.Dispose();
         }
+
 
     }
 }

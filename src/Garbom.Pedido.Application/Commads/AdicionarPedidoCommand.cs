@@ -54,6 +54,8 @@ namespace Garbom.Pedido.Application.Commads
             RuleFor(c => c.PedidoItens.Count)
                     .GreaterThan(0)
                     .WithMessage("O pedido precisa ter no mínimo 1 item");
+
+            //TODO: verificar único produto no pedido.
         }
 
 

@@ -9,6 +9,7 @@ using Garbom.Core.Domain.Objects;
 using Garbom.Core.Helps.Objects;
 using Garbom.Core.Helps.Solutions.ValidacaoPropriedades;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -41,6 +42,11 @@ namespace Garbom.Catalogo.Application.AppServices
         public async Task<ProdutoDTO> ObterProdutoPorId(Guid id)
         {
             return _mapper.Map<ProdutoDTO>(await _readOnlyProdutoRepository.ObterPorId<Produto>(id));
+        }
+
+        public async Task<ICollection<Produto>> ObterProdutosPorIds(ICollection<Guid> ids)
+        {
+           return await _readOnlyProdutoRepository.ObterTodos<Produto>(p => ids.Contains(p.Id), null, true);
         }
 
         public async Task<ListaPaginadaDinamica> ObterProdutos(ProdutoRecursoParametro produtoRecursoParametro)
@@ -165,5 +171,6 @@ namespace Garbom.Catalogo.Application.AppServices
             _estoqueService?.Dispose();
         }
 
+     
     }
 }
