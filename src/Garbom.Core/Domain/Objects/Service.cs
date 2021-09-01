@@ -6,17 +6,17 @@ namespace Garbom.Core.Domain.Objects
 {
     public abstract class Service
     {
-        protected readonly NotificationContext _notificationContext;
-        public Service(NotificationContext notificationContext)
+        protected readonly DomainNotificationContext _domainNotificationContext;
+        public Service(DomainNotificationContext domainNotificationContext)
         {
-            _notificationContext = notificationContext;
+            _domainNotificationContext = domainNotificationContext;
         }
 
         protected async Task<bool> PersistirDados(IUnitOfWork uow)
         {
             if (!await uow.Commit())
             {
-                _notificationContext.AddNotificacao(new DomainNotification("", "Houve um erro ao persistir os dados"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("", "Houve um erro ao persistir os dados"));
                 return false;
             }
             return true;

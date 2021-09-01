@@ -28,11 +28,11 @@ namespace Garbom.Pedido.Application.Commads
         private readonly IReadOnlyComandaRepository _readOnlyComandaRepository;
         private readonly IWriteOnlyComandaRepository _writeOnlyComandaRepository;
         public ComandaCommandHandler(
-            NotificationContext notificationContext,
+            DomainNotificationContext domainNotificationContext,
             IMediatorHandler mediatorHandler,
             IMapper mapper,
             IReadOnlyComandaRepository readOnlyComandaRepository,
-            IWriteOnlyComandaRepository writeOnlyComandaRepository) : base(notificationContext)
+            IWriteOnlyComandaRepository writeOnlyComandaRepository) : base(domainNotificationContext)
         {
             _mediatorHandler = mediatorHandler;
             _mapper = mapper;
@@ -47,13 +47,13 @@ namespace Garbom.Pedido.Application.Commads
 
             if (mesa == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("comanda", "Mesa não encontrado", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("comanda", "Mesa não encontrado", HttpStatusCode.NotFound));
                 return default;
             }
 
             if (mesa.StatusMesa != EStatusMesa.Disponivel)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("comanda", "Mesa não disponível", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("comanda", "Mesa não disponível", HttpStatusCode.NotFound));
                 return default;
             }
 
@@ -79,7 +79,7 @@ namespace Garbom.Pedido.Application.Commads
 
             if (comanda == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("comanda", "Comanda não encontrada", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("comanda", "Comanda não encontrada", HttpStatusCode.NotFound));
                 return default;
             }
 
@@ -93,10 +93,10 @@ namespace Garbom.Pedido.Application.Commads
             {
                 existeProdutoNaoEcontrado.ForEach(produto =>
                 {
-                    _notificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound));
+                    _domainNotificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound));
                 });
 
-                existeProdutoNaoEcontrado.ToList().ForEach(produto => _notificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound)));
+                existeProdutoNaoEcontrado.ToList().ForEach(produto => _domainNotificationContext.AddNotificacao(new DomainNotification("comanda", $"O produto {produto.Nome } não foi encontrado", HttpStatusCode.NotFound)));
                 return default;
             
             */

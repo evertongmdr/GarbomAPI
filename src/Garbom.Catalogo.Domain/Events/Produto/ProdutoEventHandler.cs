@@ -16,15 +16,15 @@ namespace Garbom.Catalogo.Domain.Events
         INotificationHandler<ProdutoAbaixoEstoqueEvent>,
         INotificationHandler<PedidoConfirmadoIntegrationEvent>
     {
-        private readonly NotificationContext _notificationContext;
+        private readonly DomainNotificationContext _domainNotificationContext;
 
         private readonly IEstoqueService _estoqueService;
         private readonly IReadOnlyProdutoRepository _readOnlyProdutoRepository;
 
         private readonly IEmailService _emailService;
-        public ProdutoEventHandler(NotificationContext notificationContext, IEstoqueService estoqueService, IEmailService emailService, IReadOnlyProdutoRepository readOnlyProdutoRepository)
+        public ProdutoEventHandler(DomainNotificationContext domainNotificationContext, IEstoqueService estoqueService, IEmailService emailService, IReadOnlyProdutoRepository readOnlyProdutoRepository)
         {
-            _notificationContext = notificationContext;
+            _domainNotificationContext = domainNotificationContext;
 
             _estoqueService = estoqueService;
             _readOnlyProdutoRepository = readOnlyProdutoRepository;
@@ -36,7 +36,7 @@ namespace Garbom.Catalogo.Domain.Events
 
             if (produto == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado", HttpStatusCode.NotFound));
 
             }
             await _emailService.EnviarEmail(new List<string>() { "" }, "garbom@gabrom.com.br", $"O Produto {produto.Nome} está com o estoque mínimo");
@@ -44,12 +44,13 @@ namespace Garbom.Catalogo.Domain.Events
 
         public async Task Handle(PedidoConfirmadoIntegrationEvent mensagem, CancellationToken cancellationToken)
         {
-            var result =  await _estoqueService.DebitarEstoqueListaProduto(mensagem.Pedido.Itens);
+            var result = await _estoqueService.DebitarEstoqueListaProduto(mensagem.Pedido.Itens);
 
             if (result)
             {
                 // sucesso
-            } else
+            }
+            else
             {
                 // defazer o pedido;
             }

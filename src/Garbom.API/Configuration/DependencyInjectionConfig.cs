@@ -29,7 +29,7 @@ namespace Garbom.API.Configuration
 
             #region Classes de Trabalho
 
-            services.AddScoped<NotificationContext>();
+            services.AddScoped<DomainNotificationContext>();
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             #endregion
 

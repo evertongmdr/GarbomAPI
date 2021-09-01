@@ -23,10 +23,10 @@ namespace Garbom.Catalogo.Domain.Services
         private readonly IWriteOnlyProdutoRepository _writeOnlyProdutoRepository;
 
         public EstoqueService(
-            NotificationContext notificationContext,
+            DomainNotificationContext domainNotificationContext,
             IMediatorHandler mediatorHandler,
         IReadOnlyProdutoRepository readOnlyProdutoRepository,
-            IWriteOnlyProdutoRepository writeOnlyProdutoRepository) : base(notificationContext)
+            IWriteOnlyProdutoRepository writeOnlyProdutoRepository) : base(domainNotificationContext)
         {
 
             _mediatorHandler = mediatorHandler;
@@ -48,13 +48,13 @@ namespace Garbom.Catalogo.Domain.Services
 
             if (produto == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado"));
                 return false;
             }
 
             if (!produto.PossuiEstoque(quantidade))
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {produto.Nome} sem estoque"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {produto.Nome} sem estoque"));
                 return false;
             }
 
@@ -76,13 +76,13 @@ namespace Garbom.Catalogo.Domain.Services
 
             if (produtos == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
                 return false;
             }
 
             if (produtos.Count != produtoItens.Count)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", "Produto(s) não encontrado"));
                 return false;
             }
             Produto p = null;
@@ -92,7 +92,7 @@ namespace Garbom.Catalogo.Domain.Services
                 p = produtos.First(x => x.Id == pi.Id);
                 if (!p.PossuiEstoque(pi.Quantidade))
                 {
-                    _notificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {p.Nome } sem estoque"));
+                    _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", $"Produto - {p.Nome } sem estoque"));
                     return false;
                 }
                 p.DebitarEstoque(pi.Quantidade);
@@ -115,7 +115,7 @@ namespace Garbom.Catalogo.Domain.Services
 
             if (produto == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("estoque", "Produto não encontrado", HttpStatusCode.NotFound));
                 return false;
             }
 

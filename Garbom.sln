@@ -35,6 +35,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.Pedido.Application",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.API", "src\Garbom.API\Garbom.API.csproj", "{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5B4E761E-4093-4541-A2AE-5AD32D41B61F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garbom.Catalogo.Domain.Tests", "tests\Garbom.Catalogo.Domain.Tests\Garbom.Catalogo.Domain.Tests.csproj", "{1B10D8AA-75E3-48E5-B74E-A9184F527C12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,10 @@ Global
 		{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B10D8AA-75E3-48E5-B74E-A9184F527C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B10D8AA-75E3-48E5-B74E-A9184F527C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B10D8AA-75E3-48E5-B74E-A9184F527C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B10D8AA-75E3-48E5-B74E-A9184F527C12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,8 @@ Global
 		{AA677A7B-6509-455F-8E0F-F6B02D348F94} = {2689B10D-E53E-4099-A9B0-9C7D97E8D10A}
 		{54D6DE05-AD4F-4E23-BECB-B15F40C70EE9} = {2689B10D-E53E-4099-A9B0-9C7D97E8D10A}
 		{2C1DA690-D849-4FAC-BBDE-A56FA4C2D363} = {FDD442FF-FA7B-4FE1-99D8-04FE8AD43F6C}
+		{5B4E761E-4093-4541-A2AE-5AD32D41B61F} = {9B9B68EE-A01B-45DD-B736-F04383B5E7DB}
+		{1B10D8AA-75E3-48E5-B74E-A9184F527C12} = {5B4E761E-4093-4541-A2AE-5AD32D41B61F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65D22697-1B47-4625-811E-52BC92BB5345}

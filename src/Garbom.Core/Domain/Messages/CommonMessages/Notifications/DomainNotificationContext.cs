@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Garbom.Core.Domain.Messages.CommonMessages.Notifications
 {
-    public class NotificationContext
+    public class DomainNotificationContext
     {
         private readonly List<DomainNotification> _domainNotifications;
         public IReadOnlyCollection<DomainNotification> DomainNotifications => _domainNotifications;
         public bool TemNotificacoes => _domainNotifications.Any();
 
-        public NotificationContext()
+        public DomainNotificationContext()
         {
             _domainNotifications = new List<DomainNotification>();
         }

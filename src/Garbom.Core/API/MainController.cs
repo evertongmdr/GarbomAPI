@@ -12,26 +12,26 @@ namespace Garbom.Core.API
     //[Authorize]   
     public abstract class MainController : ControllerBase
     {
-        protected readonly NotificationContext _notificationContext;
+        protected readonly DomainNotificationContext _domainNotificationContext;
 
-        public MainController(NotificationContext notificationContext)
+        public MainController(DomainNotificationContext domainNotificationContext)
         {
-            _notificationContext = notificationContext;
+            _domainNotificationContext = domainNotificationContext;
         }
 
         protected bool OperacaoValida()
         {
-            return !_notificationContext.TemNotificacoes;
+            return !_domainNotificationContext.TemNotificacoes;
         }
 
         protected IEnumerable<string> ObterMensagensErro()
         {
-            return _notificationContext.DomainNotifications.Select(n => n.Message).ToList();
+            return _domainNotificationContext.DomainNotifications.Select(n => n.Message).ToList();
         }
 
         protected void NotificarErro(string codigo, string mensagem)
         {
-            _notificationContext.AddNotificacao("TODO", mensagem);
+            _domainNotificationContext.AddNotificacao("TODO", mensagem);
         }
 
         protected ActionResult CustomResponse(object dado = null)
@@ -41,7 +41,7 @@ namespace Garbom.Core.API
             var result = new Result<object>
             {
                 Sucesso = sucesso,
-                Errors = _notificationContext.DomainNotifications.Select(n => n.Message).ToList(),
+                Errors = _domainNotificationContext.DomainNotifications.Select(n => n.Message).ToList(),
                 Dado = dado
             };
             return StatusCode(400, result);
@@ -72,11 +72,11 @@ namespace Garbom.Core.API
 
         protected ActionResult ErroResponse(object dado = null)
         {
-            var codigoErro = (int)_notificationContext.DomainNotifications.Select(n => n.ErroCode).First();
+            var codigoErro = (int)_domainNotificationContext.DomainNotifications.Select(n => n.ErroCode).First();
             var result = new Result<object>
             {
                 Sucesso = false,
-                Errors = _notificationContext.DomainNotifications.Select(n => n.Message).ToList(),
+                Errors = _domainNotificationContext.DomainNotifications.Select(n => n.Message).ToList(),
                 Dado = dado
             };
 
@@ -92,8 +92,8 @@ namespace Garbom.Core.API
 
             if (listaDinamica.TemAnterior)
             {
-                recursoParametro.NumeroPagina = numeroPaginaAtual -1 ;
-                linkPaginaAnterior =  Url.Link(nomeRota, recursoParametro);
+                recursoParametro.NumeroPagina = numeroPaginaAtual - 1;
+                linkPaginaAnterior = Url.Link(nomeRota, recursoParametro);
 
             }
 

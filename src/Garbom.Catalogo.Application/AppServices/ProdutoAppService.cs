@@ -24,12 +24,12 @@ namespace Garbom.Catalogo.Application.AppServices
         private readonly IMapper _mapper;
 
         public ProdutoAppService(
-            NotificationContext notificationContext,
+            DomainNotificationContext domainNotificationContext,
             IReadOnlyProdutoRepository readOnlyProdutoRepository,
             IWriteOnlyProdutoRepository writeOnlyProdutoRepository,
             IEstoqueService estoqueService,
             IMapper mapper
-            ) : base(notificationContext)
+            ) : base(domainNotificationContext)
         {
             _readOnlyProdutoRepository = readOnlyProdutoRepository;
             _writeOnlyProdutoRepository = writeOnlyProdutoRepository;
@@ -53,7 +53,7 @@ namespace Garbom.Catalogo.Application.AppServices
         {
             if (string.IsNullOrWhiteSpace(produtoRecursoParametro.Selecionar))
             {
-                _notificationContext.AddNotificacao(new DomainNotification("produto", $"O parametro selecionar não pode ser vazio"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("produto", $"O parametro selecionar não pode ser vazio"));
                 return default;
             }
             var propriedadadeInvalida = ValidacaoPropriedades
@@ -61,7 +61,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (!string.IsNullOrEmpty(propriedadadeInvalida))
             {
-                _notificationContext.AddNotificacao(new DomainNotification("produto", $"O parametro {propriedadadeInvalida} da pesquisa é inválido"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("produto", $"O parametro {propriedadadeInvalida} da pesquisa é inválido"));
                 return default;
             }
 
@@ -74,7 +74,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (!produto.EhValido())
             {
-                _notificationContext.AddNotificacoes(produto.ValidationResult);
+                _domainNotificationContext.AddNotificacoes(produto.ValidationResult);
                 return default;
             }
             var codigoJaExiste = await _readOnlyProdutoRepository
@@ -82,7 +82,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (codigoJaExiste)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("produto", "Código do produto já cadastrado"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("produto", "Código do produto já cadastrado"));
                 return default;
             }
 
@@ -92,7 +92,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (!await _writeOnlyProdutoRepository.UnitOfWork.Commit())
             {
-                _notificationContext.AddNotificacao(new DomainNotification("produto", "Houve um erro ao persistir os dados"));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("produto", "Houve um erro ao persistir os dados"));
                 return default;
             }
 
@@ -105,7 +105,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (!produtoAtualizado.EhValido())
             {
-                _notificationContext.AddNotificacoes(produtoAtualizado.ValidationResult);
+                _domainNotificationContext.AddNotificacoes(produtoAtualizado.ValidationResult);
                 return default;
             }
 
@@ -113,7 +113,7 @@ namespace Garbom.Catalogo.Application.AppServices
 
             if (produto == null)
             {
-                _notificationContext.AddNotificacao(new DomainNotification("produto", "Produto não encontrado", HttpStatusCode.NotFound));
+                _domainNotificationContext.AddNotificacao(new DomainNotification("produto", "Produto não encontrado", HttpStatusCode.NotFound));
                 return default;
             }
 
@@ -138,7 +138,7 @@ namespace Garbom.Catalogo.Application.AppServices
             var categoria = _mapper.Map<Categoria>(categoriaDTO);
             if (!categoria.EhValido())
             {
-                _notificationContext.AddNotificacoes(categoria.ValidationResult);
+                _domainNotificationContext.AddNotificacoes(categoria.ValidationResult);
                 return default;
             }
 

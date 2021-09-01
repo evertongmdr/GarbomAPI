@@ -22,7 +22,7 @@ namespace Garbom.API.Controllers
 
         private readonly IProdutoAppService _produtoAppService;
 
-        public ComandasController(NotificationContext notificationContex, IMediatorHandler mediatorHandler, IComandaQueries comandaQueries, IProdutoAppService produtoAppService) : base(notificationContex)
+        public ComandasController(DomainNotificationContext domainNotificationContex, IMediatorHandler mediatorHandler, IComandaQueries comandaQueries, IProdutoAppService produtoAppService) : base(domainNotificationContex)
         {
             _mediatorHandler = mediatorHandler;
             _comandaQueries = comandaQueries;
@@ -52,7 +52,7 @@ namespace Garbom.API.Controllers
 
             if (!adicionarPedidoCommand.EhValido())
             {
-                _notificationContext.AddNotificacoes(adicionarPedidoCommand.ValidationResult);
+                _domainNotificationContext.AddNotificacoes(adicionarPedidoCommand.ValidationResult);
                 return ErroResponse();
             }
 
@@ -65,7 +65,7 @@ namespace Garbom.API.Controllers
                 produto = produtos.First(p => p.Id == item.ProdutoId);
 
                 if (!produto.PossuiEstoque(item.Quantidade))
-                    _notificationContext.AddNotificacao(new DomainNotification("produto", $"Produto {produto.Nome} sem estoque"));
+                    _domainNotificationContext.AddNotificacao(new DomainNotification("produto", $"Produto {produto.Nome} sem estoque"));
             }
 
             if (!OperacaoValida()) return ErroResponse();

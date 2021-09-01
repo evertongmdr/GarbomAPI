@@ -18,7 +18,7 @@ namespace Garbom.API.Controllers
         private readonly IProdutoAppService _produtoAppService;
 
         private readonly CatalogoContext _catalogoContext;
-        public ProdutosController(NotificationContext notificationContex, IProdutoAppService produtoAppService, CatalogoContext catalogoContext) : base(notificationContex)
+        public ProdutosController(DomainNotificationContext notificationContex, IProdutoAppService produtoAppService, CatalogoContext catalogoContext) : base(notificationContex)
         {
             _produtoAppService = produtoAppService;
             _catalogoContext = catalogoContext;

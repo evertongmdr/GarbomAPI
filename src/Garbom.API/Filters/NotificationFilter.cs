@@ -9,8 +9,8 @@ namespace Garbom.API.Filters
 {
     public class NotificationFilter : IAsyncResultFilter
     {
-        private readonly NotificationContext _notificationContext;
-        public NotificationFilter(NotificationContext notificationContext)
+        private readonly DomainNotificationContext _notificationContext;
+        public NotificationFilter(DomainNotificationContext notificationContext)
         {
             _notificationContext = notificationContext;
         }
