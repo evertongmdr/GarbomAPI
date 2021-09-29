@@ -6,7 +6,7 @@ namespace Garbom.Catalogo.Application.AutoMapper
 {
     public class CategoriaMappingProfile : Profile
     {
-        //prDoPr
+        // nova alteração
         public CategoriaMappingProfile()
         {
             CreateMap<CategoriaDTO, Categoria>().ReverseMap();
