@@ -52,6 +52,8 @@ namespace Garbom.Catalogo.Domain.Models
         public void AtribuirQuantidadeEstoque(int quantidadeEstoque)
         {
             QuantidadeEstoque = quantidadeEstoque;
+            // quantidade 1.0
+            // quantidade 2.0
         }
 
         public bool PossuiEstoque(int quantidade)
