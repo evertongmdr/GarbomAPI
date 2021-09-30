@@ -53,7 +53,7 @@ namespace Garbom.Catalogo.Domain.Models
         {
             QuantidadeEstoque = quantidadeEstoque;
         }
-
+        ///
         public bool PossuiEstoque(int quantidade)
         {
             return QuantidadeEstoque >= quantidade;
